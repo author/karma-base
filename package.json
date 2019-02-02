@@ -1,6 +1,6 @@
 {
   "name": "@author.io/karma-base",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A base configuration for running Karma browser tests locally and on Sauce Labs.",
   "main": "index.js",
   "scripts": {
