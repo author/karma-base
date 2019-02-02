@@ -116,9 +116,6 @@ let karmaconfig = {
       files: karmaconfig.getFiles(),
       port: 9876,
       colors: true,
-      captureTimeout: 120000,
-      browserDisconnectTimeout: 120000,
-      browserNoActivityTimeout: 120000,
       browserDisconnectTolerance: 2,
       browsers: ['Chrome'],
       singleRun: true
