@@ -101,7 +101,7 @@ module.exports = testService => {
       }
 
       browsers[browser].os = browsers[browser].version.split(/\s+/)[0].trim()
-      browsers[browser].os_version = browsers[browser].version.split(/\s+/)[1].trim()
+      browsers[browser].os_version = (browsers[browser].version.split(/\s+/)[1] || '').trim()
 
       if (browsers[browser].os.toLowerCase().indexOf('mac') >= 0) {
         browsers[browser].os = 'OS X'
