@@ -165,7 +165,20 @@ module.exports = testService => {
         colors: true,
         browserDisconnectTolerance: 2,
         browsers: ['Chrome'],
-        singleRun: true
+        singleRun: true,
+        flags: [
+          '--no-sandbox',
+          '--disable-gpu',
+          '--no-default-browser-check',
+          '--no-first-run',
+          '--disable-default-apps',
+          '--disable-popup-blocking',
+          '--disable-translate',
+          '--disable-background-timer-throttling',
+          '--disable-renderer-backgrounding',
+          '--disable-device-discovery-notifications',
+          '--disable-web-security'
+        ]
       }
 
       if (CI) {
