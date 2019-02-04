@@ -40,7 +40,7 @@ module.exports = testService => {
       let cfg = {
         base: testService,
         browserName: keys[i],
-        version: b[keys[i]] + (brwsr.indexOf('safari') >= 0 ? '.0' : ''),
+        version: b[keys[i]] + (brwsr.indexOf('.') < 0 ? '.0' : ''),
         platform: brwsr.indexOf(/safari/i) >= 0 ? 'macOS 10.14' : 'Windows 10'
       }
 
@@ -72,14 +72,14 @@ module.exports = testService => {
   browsers['BROWSER_Safari_10'] = {
     base: testService,
     browserName: 'safari',
-    platform: 'OS X 10.11',
-    version: '10.0'
+    platform: 'OS X 16.0',
+    version: '10.1'
   }
 
   browsers['BROWSER_Safari_12'] = {
     base: testService,
     browserName: 'safari',
-    platform: 'macOS 10.14',
+    platform: 'OS X 18.0',
     version: '12.0'
   }
 
@@ -90,27 +90,36 @@ module.exports = testService => {
     platform: 'Windows 10'
   }
 
-  // CConvert to BrowserStack format if applicable
+  // Convert to BrowserStack format if applicable
   if (testService.toLowerCase().indexOf('browserstack') >= 0) {
     Object.keys(browsers).forEach(browser => {
       browsers[browser].browser = browsers[browser].browserName
-      browsers[browser].browser_version = browsers[browser].version
+      browsers[browser].browser_version = browsers[browser].version.trim()
+
+      if (browsers[browser].browser === 'internet explorer') {
+        browsers[browser].browser = 'IE'
+      }
+
+      if (browsers[browser].browser.toLowerCase().indexOf('edge') >= 0) {
+        browsers[browser].browser = 'Edge'
+        browsers[browser].browser_version = browsers[browser].browser_version.split('.')[0] + '.0'
+      }
 
       if (!browsers[browser].platform) {
         browsers[browser].platform = 'Windows 10'
       }
 
-      browsers[browser].os = browsers[browser].version.split(/\s+/)[0].trim()
-      browsers[browser].os_version = (browsers[browser].version.split(/\s+/)[1] || '').trim()
+      browsers[browser].os = browsers[browser].platform.split(/\s+/)[0].trim()
+      browsers[browser].os_version = (browsers[browser].platform.split(/\s+/).pop() || '').trim()
 
-      if (browsers[browser].os.toLowerCase().indexOf('mac') >= 0) {
+      if (browsers[browser].os === 'OS' || browsers[browser].os.toLowerCase().indexOf('mac') >= 0) {
         browsers[browser].os = 'OS X'
         try {
-          browsers[browser].os_version = require('macos-release')(browsers[browser].os_version).name
+          browsers[browser].os_version = ((require('macos-release')(browsers[browser].os_version)).name || 'Mojave').replace('OS X', '').trim()
         } catch (e) {}
       }
 
-      delete browsers[browser].browser
+      delete browsers[browser].browserName
       delete browsers[browser].version
       delete browsers[browser].platform
     })
@@ -120,10 +129,16 @@ module.exports = testService => {
   const chalk = require('chalk')
   const tablemaker = require('table').table
   const displayBrowserList = BrowserList => {
-    let rows = [[chalk.bold('Browser'), chalk.bold('Version')]]
+    let rows = [[chalk.bold('Browser'), chalk.bold('Version'), chalk.bold('Platform')]]
 
     Object.keys(BrowserList).sort().forEach(slbrowser => {
-      rows.push([BrowserList[slbrowser].browserName, BrowserList[slbrowser].version])
+      rows.push(
+        [
+          (BrowserList[slbrowser].browserName || BrowserList[slbrowser].browser).trim(),
+          (BrowserList[slbrowser].version || BrowserList[slbrowser].browser_version).trim(),
+          (BrowserList[slbrowser].platform || BrowserList[slbrowser].os + ' ' + BrowserList[slbrowser].os_version).trim()
+        ]
+      )
     })
 
     console.log(tablemaker(rows, {

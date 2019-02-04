@@ -40,6 +40,7 @@
     "karma-spec-reporter": "0.0.32",
     "karma-tap": "^4.1.4",
     "karma-tap-pretty-reporter": "^4.1.0",
+    "leaked-handles": "^5.2.0",
     "localenvironment": "^1.0.2",
     "macos-release": "^2.0.0",
     "table": "^5.2.1",
