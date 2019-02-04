@@ -52,21 +52,21 @@ module.exports = testService => {
     base: testService,
     browserName: 'chrome',
     version: '45.0',
-    platform: 'Windows 7'
+    platform: 'Windows 10'
   }
 
   browsers['BROWSER_Firefox_50'] = {
     base: testService,
     browserName: 'firefox',
     version: '50.0',
-    platform: 'Windows 7'
+    platform: 'Windows 10'
   }
 
   browsers['BROWSER_InternetExplorer'] = {
     base: testService,
     browserName: 'internet explorer',
     version: '11.0',
-    platform: 'Windows 7'
+    platform: 'Windows 8.1'
   }
 
   browsers['BROWSER_Safari_10'] = {
