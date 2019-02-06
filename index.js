@@ -193,7 +193,7 @@ module.exports = testService => {
 
           if (process.env.hasOwnProperty('TRAVIS_JOB_NUMBER')) {
             cfg.sauceLabs.startConnect = false
-            cfg.sauceLabs.tunnelIdentifier process.env.TRAVIS_JOB_NUMBER
+            cfg.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER
           }
         } else if (testService.toLowerCase() === 'browserstack') {
           cfg.browserStack = {
