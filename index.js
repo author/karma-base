@@ -165,7 +165,7 @@ module.exports = testService => {
         colors: true,
         browserDisconnectTolerance: 2,
         browsers: ['Chrome'],
-        singleRun: true,
+        singleRun: false,
         flags: [
           '--no-sandbox',
           '--disable-gpu',
@@ -194,6 +194,10 @@ module.exports = testService => {
           if (process.env.hasOwnProperty('TRAVIS_JOB_NUMBER')) {
             cfg.sauceLabs.startConnect = false
             cfg.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER
+            cfg.sauceLabs.connectOptions = {
+              port: 5757,
+              logfile: 'sauce_connect.log'
+            }
           }
         } else if (testService.toLowerCase() === 'browserstack') {
           cfg.browserStack = {
