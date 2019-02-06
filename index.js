@@ -165,7 +165,7 @@ module.exports = testService => {
         colors: true,
         browserDisconnectTolerance: 2,
         browsers: ['Chrome'],
-        singleRun: false,
+        singleRun: true,
         flags: [
           '--no-sandbox',
           '--disable-gpu',
@@ -186,7 +186,7 @@ module.exports = testService => {
           cfg.reporters.push('saucelabs')
           cfg.sauceLabs = { // eslint-disable-line no-unused-vars
             testName: `${pkg.name} v${pkg.version}`,
-            build: process.env.TRAVIS_BUILD_NUMBER || process.env.CI_BUILD_TAG || process.env.CI_BUILD_NUMBER || process.env.BUILD_NUMBER || 1,
+            build: process.env.TRAVIS_BUILD_NUMBER || process.env.CI_BUILD_TAG || process.env.CI_BUILD_NUMBER || process.env.BUILD_NUMBER || (new Date()).toISOString(),
             recordVideo: false,
             recordScreenshots: false
           }
