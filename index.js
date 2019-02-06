@@ -182,12 +182,24 @@ module.exports = testService => {
       }
 
       if (CI) {
-        cfg.reporters.push('saucelabs')
-        cfg.sauceLabs = { // eslint-disable-line no-unused-vars
-          testName: `${pkg.name} v${pkg.version}`,
-          build: process.env.TRAVIS_BUILD_NUMBER || process.env.CI_BUILD_TAG || process.env.CI_BUILD_NUMBER || process.env.BUILD_NUMBER || 1,
-          recordVideo: false,
-          recordScreenshots: false
+        if (testService.toLowerCase() === 'saucelabs') {
+          cfg.reporters.push('saucelabs')
+          cfg.sauceLabs = { // eslint-disable-line no-unused-vars
+            testName: `${pkg.name} v${pkg.version}`,
+            build: process.env.TRAVIS_BUILD_NUMBER || process.env.CI_BUILD_TAG || process.env.CI_BUILD_NUMBER || process.env.BUILD_NUMBER || 1,
+            recordVideo: false,
+            recordScreenshots: false
+          }
+
+          if (process.env.hasOwnProperty('TRAVIS_JOB_NUMBER')) {
+            cfg.sauceLabs.startConnect = false
+            cfg.sauceLabs.tunnelIdentifier process.env.TRAVIS_JOB_NUMBER
+          }
+        } else if (testService.toLowerCase() === 'browserstack') {
+          cfg.browserStack = {
+            username: process.env.BROWSERSTACK_USERNAME,
+            accessKey: process.env.BROWSERSTACK_SECRET
+          }
         }
 
         if (modernBrowsersOnly) {
