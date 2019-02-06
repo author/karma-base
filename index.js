@@ -224,7 +224,8 @@ module.exports = testService => {
         Object.keys(cfg.browsers).forEach(br => {
           localBrowsers[cfg.browsers[br]] = {
             browserName: cfg.browsers[br],
-            version: 'Local Copy'
+            version: 'Local Copy',
+            platform: (process.platform === 'win32' ? 'Windows' : (process.platform === 'debian' ? 'macOS' : process.platform)) + ' ' + require('os').release()
           }
         })
 
